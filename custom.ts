@@ -39,7 +39,7 @@ enum joysticStates
 /**
  * Custom blocks
  */
-//% weight=100 color=#0fbc11 icon=""
+//% weight=100 color=#8A2BE2 icon="U+E7FC"
 namespace pxt_Valley_EFJSB_Helpers
 {
     let xCentre = 522;
@@ -80,7 +80,7 @@ namespace pxt_Valley_EFJSB_Helpers
     * This is how far from centre the joystick needs to report    
     * before reporting not centred.
     * Handy for Joysticks that twitch or are loose
-    */
+    //% newGive.min=0 newGive.max= 1023 
     //% blockId=setCurrentJoystickGive block="Set the the current 'give' variable"
     export function setCurrentJoystickGive(newGive : number): void 
     { 
