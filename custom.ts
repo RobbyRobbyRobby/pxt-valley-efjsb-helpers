@@ -22,16 +22,38 @@ enum joysticAxis
     Y
 }
 
-enum joysticStates 
+enum joysticAnalogStates 
 {
     //% block="Top"
     Top,
+    //% block="Right"
+    Right,
     //% block="Bottom"
     Bottom,
     //% block="Left"
     Left,
+    //% block="Centre"
+    Centre
+}
+
+enum joysticDigitalStates 
+{
+    //% block="Top"
+    Top,
+    //% block="TopRight"
+    TopRight,
     //% block="Right"
     Right,
+    //% block="BottomRight"
+    BottomRight,
+    //% block="Bottom"
+    Bottom,
+    //% block="BottomLeft"
+    BottomLeft,
+    //% block="Left"
+    Left,
+    //% block="TopLeft"
+    TopLeft,
     //% block="Centre"
     Centre
 }
@@ -45,7 +67,7 @@ namespace pxt_Valley_EFJSB_Helpers
     let xCentre = 522;
     let yCentre = 522;
 
-    let joystickGive = 5
+    let joystickThreshhold = 5
 
     /**
     * returns the current centre variable used for the Joystick
@@ -64,31 +86,31 @@ namespace pxt_Valley_EFJSB_Helpers
     }
 
     /**
-    * Returns the current 'give' variable used for the Joystick
+    * Returns the current 'threshhold' variable used for the Joystick
     * This is how far from centre the joystick needs to report    
     * before reporting not centred.
     * Handy for Joysticks that twitch or are loose
     */
-    //% blockId=getCurrentJoystickGive block="Get the the current 'give' variable"
+    //% blockId=getCurrentJoystickThreshhold block="Get the the current 'threshhold' variable"
     export function getCurrentJoystickGive(): number 
     {
-         return joystickGive;        
+         return joystickThreshhold;        
     }
 
     /**
-    * Sets the current 'give' variable used for the Joystick
+    * Sets the current 'threshhold' variable used for the Joystick
     * This is how far from centre the joystick needs to report    
     * before reporting not centred.
     * Handy for Joysticks that twitch or are loose
     */
-    //% newGive.min=0 newGive.max=1023 
-    //% blockId=setCurrentJoystickGive block="Set the the current 'give' variable"
-    export function setCurrentJoystickGive(newGive : number): void 
+    //% newThreshhold.min=0 newGive.max=1023 
+    //% blockId=setCurrentJoystickThreshhold block="Set the the current 'threshhold' variable"
+    export function setCurrentJoystickGive(newThreshhold : number): void 
     { 
-        if (newGive >= 0 &&
-            newGive <= 1023)
+        if (newThreshhold >= 0 &&
+            newThreshhold <= 1023)
         {
-            joystickGive = newGive;      
+            joystickThreshhold = newThreshhold;      
         }
     }
 
@@ -148,20 +170,104 @@ namespace pxt_Valley_EFJSB_Helpers
     * @param state requested direction to check
     */
     //% blockId=isJoystickPointing block="Is the joystick pointing %state of centre"
-    export function isJoystickPointing(state : joysticStates): boolean 
+    export function isJoystickPointing(state : joysticAnalogStates): boolean 
     {
+        let p0 = pins.analogReadPin(AnalogPin.P0);
+        let p1 = pins.analogReadPin(AnalogPin.P1);
+
         switch (state) 
         {
-            case joysticStates.Left: return pins.analogReadPin(AnalogPin.P0) < xCentre - joystickGive;
-            case joysticStates.Right: return pins.analogReadPin(AnalogPin.P0) > (xCentre + joystickGive);
-            case joysticStates.Top: return pins.analogReadPin(AnalogPin.P1) > (yCentre + joystickGive);
-            case joysticStates.Bottom: return pins.analogReadPin(AnalogPin.P1) < (yCentre - joystickGive);
-            case joysticStates.Centre: return (pins.analogReadPin(AnalogPin.P1) >= (yCentre - joystickGive) && 
-                                               pins.analogReadPin(AnalogPin.P1) <= (yCentre + joystickGive) && 
-                                               pins.analogReadPin(AnalogPin.P0) >= (xCentre - joystickGive) && 
-                                               pins.analogReadPin(AnalogPin.P0) <= (xCentre + joystickGive));
+            case joysticAnalogStates.Left: return p0 < xCentre - joystickThreshhold;
+            case joysticAnalogStates.Right: return p0 > xCentre + joystickThreshhold;
+            case joysticAnalogStates.Top: return p1 > yCentre + joystickThreshhold;
+            case joysticAnalogStates.Bottom: return p1 < yCentre - joystickThreshhold;
+            case joysticAnalogStates.Centre: return (p1 >= yCentre - joystickThreshhold && 
+                                                     p1 <= yCentre + joystickThreshhold && 
+                                                     p0 >= xCentre - joystickThreshhold && 
+                                                     p0 <= xCentre + joystickThreshhold);
             default: return false;
         }
+    }
+
+    /**
+    * Is the joystick registering the requested direction 
+    * This is tested against the Centre position, set in Calibration
+    * Note, these are not exclusive.  If joystick is at 0,0 then
+    * both Left and Bottom will return true
+    * @param state requested direction to check
+    */
+    //% blockId=getDigitalJoystickPosition block="Is the joystick pointing %state of centre"
+    export function getDigitalJoystickPosition(): joysticDigitalStates 
+    {
+        let p0 = pins.analogReadPin(AnalogPin.P0);
+        let p1 = pins.analogReadPin(AnalogPin.P1);
+
+        let digitalThreshhold = 100;
+
+        let left, right, up, down = false;
+
+        left = p0 < xCentre - digitalThreshhold;
+        right = p0 > xCentre + digitalThreshhold;
+        up = p0 > yCentre + digitalThreshhold;
+        down = p0 < yCentre - digitalThreshhold;
+        
+        if (left)
+        {
+            if (up)
+            {
+                return joysticDigitalStates.TopLeft;
+            }
+            else 
+            {
+                if (down)
+                {
+                    return joysticDigitalStates.BottomLeft;
+                }
+                else
+                {
+                    return joysticDigitalStates.Left;
+                }
+            }
+        }
+        else
+        {
+            if (right)
+            {
+                if (up)
+                {
+                    return joysticDigitalStates.TopRight;
+                }
+                else 
+                {
+                    if (down)
+                    {
+                        return joysticDigitalStates.BottomRight;
+                    }
+                    else
+                    {
+                        return joysticDigitalStates.Right;
+                    }
+                }
+            }
+            else
+            {
+                if (up)
+                {
+                    return joysticDigitalStates.Top;
+                }
+                else 
+                {
+                    if (down)
+                    {
+                        return joysticDigitalStates.Bottom;
+                    }
+                    else
+                    {
+                        return joysticDigitalStates.Centre;
+                    }
+                }
+            }
+        }        
     }
 
     /**
@@ -175,7 +281,10 @@ namespace pxt_Valley_EFJSB_Helpers
     //% blockId=IsButtonPressed block="is button %button active" 
     export function IsButtonPressed(button: controllerButtons): boolean 
     {
-        if (pins.analogReadPin(AnalogPin.P2) == button)
+        let p = pins.analogReadPin(AnalogPin.P2);
+
+        if (p >= button - 2 &&
+            p <= button + 2)
         {
             return true;
         }
