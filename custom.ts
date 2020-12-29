@@ -39,7 +39,7 @@ enum joysticStates
 /**
  * Custom blocks
  */
-//% weight=100 color=#8A2BE2 icon="U+E7FC"
+//% weight=100 color=#8A2BE2 icon=""
 namespace pxt_Valley_EFJSB_Helpers
 {
     let xCentre = 522;
