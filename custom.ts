@@ -190,13 +190,9 @@ namespace pxt_Valley_EFJSB_Helpers
     }
 
     /**
-    * Is the joystick registering the requested direction 
-    * This is tested against the Centre position, set in Calibration
-    * Note, these are not exclusive.  If joystick is at 0,0 then
-    * both Left and Bottom will return true
-    * @param state requested direction to check
+    * What is the DPad (Digital) direction of the joystick? 
     */
-    //% blockId=getDigitalJoystickPosition block="Is the joystick pointing %state of centre"
+    //% blockId=getDigitalJoystickPosition block="Get the current Digital DPad value of the Joystick"
     export function getDigitalJoystickPosition(): joysticDigitalStates 
     {
         let p0 = pins.analogReadPin(AnalogPin.P0);
