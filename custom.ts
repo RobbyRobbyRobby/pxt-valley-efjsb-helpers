@@ -3,7 +3,7 @@ enum controllerButtons
     //% block="A"
     A = 1,
     //% block="B"
-    B = 517,
+    B = 516,
     //% block="C"
     C = 686,
     //% block="D"
@@ -11,7 +11,7 @@ enum controllerButtons
     //% block="E"
     E = 855,
     //% block="F"
-    F = 822
+    F = 821
 }
 
 enum joysticAxis 
