@@ -198,7 +198,7 @@ namespace pxt_Valley_EFJSB_Helpers
         let p0 = pins.analogReadPin(AnalogPin.P0);
         let p1 = pins.analogReadPin(AnalogPin.P1);
 
-        let digitalThreshhold = 10;
+        let digitalThreshhold = 150;
 
         let left, right, up, down = false;
 
@@ -271,9 +271,10 @@ namespace pxt_Valley_EFJSB_Helpers
     /**
     * Convert the numeric points of digital joystick position to arrows
     * @joystickState (0-8 clockwise from top) to a standard Micro:Bit ArrowName.
+    * @joystickState
     */
-    //% blockId=joystickPositionAsArrow block="Convert %joystickState to ArrowName"
-    export function joystickPositionAsArrow(joystickState: joysticDigitalStates): ArrowNames
+    //% blockId=joystickPositionAsArrow block="Convert digital joystick state %joystickState to ArrowName"
+    export function joystickPositionAsArrow(joystickState: number): ArrowNames
     {
         switch (joystickState)
         {
