@@ -278,6 +278,7 @@ namespace pxt_Valley_EFJSB_Helpers
     {
         switch (joystickState)
         {
+            case joysticDigitalStates.Top: return ArrowNames.North; break;
             case joysticDigitalStates.TopRight: return ArrowNames.NorthEast; break;
             case joysticDigitalStates.Right: return ArrowNames.East; break;
             case joysticDigitalStates.BottomRight: return ArrowNames.SouthEast; break;
