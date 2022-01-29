@@ -190,7 +190,7 @@ namespace pxt_Valley_EFJSB_Helpers
     }
 
     /**
-    * What is the DPad (Digital) direction of the joystick? 
+    * What is the DPad (Digital) direction of the joystick
     */
     //% blockId=getDigitalJoystickPosition block="Get the current Digital DPad value of the Joystick"
     export function getDigitalJoystickPosition(): joysticDigitalStates 
@@ -263,7 +263,9 @@ namespace pxt_Valley_EFJSB_Helpers
                     }
                 }
             }
-        }        
+        }  
+
+        return joysticDigitalStates.Centre;      
     }
 
     /**
