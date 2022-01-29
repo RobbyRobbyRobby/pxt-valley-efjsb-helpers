@@ -198,14 +198,14 @@ namespace pxt_Valley_EFJSB_Helpers
         let p0 = pins.analogReadPin(AnalogPin.P0);
         let p1 = pins.analogReadPin(AnalogPin.P1);
 
-        let digitalThreshhold = 100;
+        let digitalThreshhold = 10;
 
         let left, right, up, down = false;
 
         left = p0 < xCentre - digitalThreshhold;
         right = p0 > xCentre + digitalThreshhold;
-        up = p0 > yCentre + digitalThreshhold;
-        down = p0 < yCentre - digitalThreshhold;
+        up = p1 > yCentre + digitalThreshhold;
+        down = p1 < yCentre - digitalThreshhold;
         
         if (left)
         {
@@ -266,6 +266,26 @@ namespace pxt_Valley_EFJSB_Helpers
         }  
 
         return joysticDigitalStates.Centre;      
+    }
+
+    /**
+    * Convert the numeric points of digital joystick position to arrows
+    * @joystickState (0-8 clockwise from top) to a standard Micro:Bit ArrowName.
+    */
+    //% blockId=joystickPositionAsArrow block="Convert %joystickState to ArrowName"
+    export function joystickPositionAsArrow(joystickState: joysticDigitalStates): ArrowNames
+    {
+        switch (joystickState)
+        {
+            case joysticDigitalStates.TopRight: return ArrowNames.NorthEast; break;
+            case joysticDigitalStates.Right: return ArrowNames.East; break;
+            case joysticDigitalStates.BottomRight: return ArrowNames.SouthEast; break;
+            case joysticDigitalStates.Bottom: return ArrowNames.South; break;
+            case joysticDigitalStates.BottomLeft: return ArrowNames.SouthWest; break;
+            case joysticDigitalStates.Left: return ArrowNames.West; break;
+            case joysticDigitalStates.TopLeft: return ArrowNames.NorthWest; break;
+            default: return null; break;
+        }
     }
 
     /**
