@@ -1,4 +1,4 @@
-enum controllerButtons 
+enum controllerButtons
 {
     //% block="A"
     A = 1,
@@ -36,6 +36,7 @@ enum joysticAnalogStates
     Centre
 }
 
+//% block
 enum joysticDigitalStates 
 {
     //% block="Top"
@@ -58,12 +59,14 @@ enum joysticDigitalStates
     Centre
 }
 
+
 /**
  * Custom blocks
  */
 //% weight=100 color=#8A2BE2 icon=""
 namespace pxt_Valley_EFJSB_Helpers
 {
+
     let xCentre = 522;
     let yCentre = 522;
 
@@ -74,7 +77,8 @@ namespace pxt_Valley_EFJSB_Helpers
     * on the specified Axis, offset from the centre     
     * Return of -1 (zero) indicates either an error
     * @param axis x for left/right, y for top/bottom
-    */
+    */ 
+    //% advanced=true
     //% blockId=getCurrentCentreValue block="Get the the current centre variable of %axis axis"
     export function getCurrentCentreValue(axis: joysticAxis): number 
     {
@@ -91,6 +95,7 @@ namespace pxt_Valley_EFJSB_Helpers
     * before reporting not centred.
     * Handy for Joysticks that twitch or are loose
     */
+    //% advanced=true
     //% blockId=getCurrentJoystickThreshhold block="Get the the current 'threshhold' variable"
     export function getCurrentJoystickGive(): number 
     {
@@ -103,6 +108,7 @@ namespace pxt_Valley_EFJSB_Helpers
     * before reporting not centred.
     * Handy for Joysticks that twitch or are loose
     */
+    //% advanced=true
     //% newThreshhold.min=0 newGive.max=1023 
     //% blockId=setCurrentJoystickThreshhold block="Set the the current 'threshhold' variable"
     export function setCurrentJoystickGive(newThreshhold : number): void 
@@ -119,6 +125,7 @@ namespace pxt_Valley_EFJSB_Helpers
     * using the current positions on x and y axis.
     * Joystick should be free of input when this is called.
     */
+    //% advanced=true
     //% blockId=calibrateJoystick block="Calibrate the Joystick with current position as centre"
     export function calibrateJoystick(): void 
     {
@@ -133,6 +140,7 @@ namespace pxt_Valley_EFJSB_Helpers
     * (ie; bottom left is 0,0)
     * @param axis x for left/right, y for top/bottom
     */
+    //% advanced=true
     //% blockId=getRawJoystickValue block="Get raw value of Joystick on %axis axis"
     export function getRawJoystickValue(axis: joysticAxis): number 
     {
@@ -151,6 +159,7 @@ namespace pxt_Valley_EFJSB_Helpers
     * Right and Top values are positive,
     * @param axis x for left/right, y for top/bottom
     */
+    //% advanced=true
     //% blockId=getOffsetJoystickValue block="Get the Delta value of Joystick on %axis axis"
     export function getOffsetJoystickValue(axis: joysticAxis): number 
     {
@@ -273,6 +282,7 @@ namespace pxt_Valley_EFJSB_Helpers
     * @joystickState (0-8 clockwise from top) to a standard Micro:Bit ArrowName.
     * @joystickState
     */
+    //% joystickState.min=0 joystickState.max=8
     //% blockId=joystickPositionAsArrow block="Convert digital joystick state %joystickState to ArrowName"
     export function joystickPositionAsArrow(joystickState: number): ArrowNames
     {
@@ -298,7 +308,7 @@ namespace pxt_Valley_EFJSB_Helpers
      * simpler and probably better in most situations
      * @param button the button, a-f, which map to the analog values.
      */
-    //% blockId=IsButtonPressed block="is button %button active" 
+    //% blockId=IsButtonPressed block="is button %button pressed" 
     export function IsButtonPressed(button: controllerButtons): boolean 
     {
         let p = pins.analogReadPin(AnalogPin.P2);
@@ -313,4 +323,22 @@ namespace pxt_Valley_EFJSB_Helpers
             return false;
         }
     }
+/*
+    pins.setEvents(DigitalPin.P2, PinEventType.Edge);
+
+    control.onEvent(
+        EventBusSource.MICROBIT_ID_IO_P2, 
+        EventBusValue.MICROBIT_PIN_EVT_RISE, 
+        () => doeventstuff(),
+        EventFlags.QueueIfBusy
+        );
+
+    //% blockId=CustomButtonPressed block="button pressed" 
+    export function doeventstuff() :void
+    {
+            basic.showNumber(pins.analogReadPin(AnalogPin.P2));
+            pause(100);
+            basic.clearScreen();
+            
+    }*/
 }
